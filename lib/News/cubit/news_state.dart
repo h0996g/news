@@ -9,18 +9,34 @@ sealed class NewsState extends Equatable {
 
 final class NewsInitial extends NewsState {}
 
-final class NewsStateLoading extends NewsState {}
+final class NewsEverythingStateLoading extends NewsState {}
 
-final class NewsStateSuccess extends NewsState {
+final class NewsEverythingStateSuccess extends NewsState {
   final NewsModel newsModel;
 
-  const NewsStateSuccess(this.newsModel);
+  const NewsEverythingStateSuccess(this.newsModel);
 }
 
-final class NewsStateError extends NewsState {
+final class NewsEverythingStateError extends NewsState {
   final String error;
 
-  const NewsStateError(this.error);
+  const NewsEverythingStateError(this.error);
 }
 
-final class NewsStateBad extends NewsState {}
+final class NewsEverythingStateBad extends NewsState {}
+
+final class NewsHeadlinesStateLoading extends NewsState {}
+
+final class NewsHeadlinesStateSuccess extends NewsState {
+  final NewsModel newsModel;
+
+  const NewsHeadlinesStateSuccess(this.newsModel);
+}
+
+final class NewsHeadlinesStateError extends NewsState {
+  final String error;
+
+  const NewsHeadlinesStateError(this.error);
+}
+
+final class NewsHeadlinesStateBad extends NewsState {}

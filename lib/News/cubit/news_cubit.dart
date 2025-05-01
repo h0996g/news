@@ -9,22 +9,45 @@ part 'news_state.dart';
 class NewsCubit extends Cubit<NewsState> {
   NewsCubit() : super(NewsInitial());
   static NewsCubit get(context) => BlocProvider.of(context);
-  NewsModel? newsModel;
-  Future<void> getNews() async {
-    emit(NewsStateLoading());
-    VPSDio.get(path: ApiConst.everything, queryParameters: {'q': 'tesla'})
+  NewsModel? newsEverythingModel;
+  Future<void> getNewsEverything({
+    Map<String, dynamic>? queryParameters,
+  }) async {
+    emit(NewsEverythingStateLoading());
+    try {
+      final value = await VPSDio.get(
+        path: ApiConst.everything,
+        queryParameters: queryParameters ?? {'q': 'latest'},
+      );
+      if (value.statusCode == 200) {
+        newsEverythingModel = NewsModel.fromJson(value.data);
+        emit(NewsEverythingStateSuccess(newsEverythingModel!));
+      } else {
+        emit(NewsEverythingStateError(value.statusMessage ?? 'Unknown error'));
+      }
+    } catch (e) {
+      print(e);
+      emit(NewsEverythingStateBad());
+    }
+  }
+
+  NewsModel? newsHeadlinesModel;
+
+  Future<void> getNewsHeadlines() async {
+    emit(NewsEverythingStateLoading());
+    VPSDio.get(path: ApiConst.topHeadlines, queryParameters: {'country': 'us'})
         .then((value) {
           if (value.statusCode == 200) {
-            newsModel = NewsModel.fromJson(value.data);
-            emit(NewsStateSuccess(newsModel!));
+            newsHeadlinesModel = NewsModel.fromJson(value.data);
+            emit(NewsEverythingStateSuccess(newsHeadlinesModel!));
           } else {
             print(value.data);
-            emit(NewsStateError(value.statusMessage!));
+            emit(NewsEverythingStateError(value.statusMessage!));
           }
         })
         .catchError((e) {
           print(e);
-          emit(NewsStateBad());
+          emit(NewsEverythingStateBad());
         });
   }
 }

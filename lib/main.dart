@@ -27,7 +27,8 @@ class MyApp extends StatelessWidget {
       minTextAdapt: true,
       splitScreenMode: true,
       child: BlocProvider(
-        create: (context) => NewsCubit()..getNews(),
+        create: (context) => NewsCubit()..getNewsEverything(),
+        // ..getNewsHeadlines(),
         child: MaterialApp.router(
           routerConfig: AppRouter.router,
           debugShowCheckedModeBanner: false,
