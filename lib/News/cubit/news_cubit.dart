@@ -9,7 +9,6 @@ part 'news_state.dart';
 class NewsCubit extends Cubit<NewsState> {
   NewsCubit() : super(NewsInitial());
   static NewsCubit get(context) => BlocProvider.of(context);
-  NewsModel? newsEverythingModel;
   Future<void> getNewsEverything({
     String? fromDate,
     String? toDate,
@@ -31,8 +30,8 @@ class NewsCubit extends Cubit<NewsState> {
       );
 
       if (value.statusCode == 200) {
-        newsEverythingModel = NewsModel.fromJson(value.data);
-        emit(NewsEverythingStateSuccess(newsEverythingModel!));
+        NewsModel newsEverythingModel = NewsModel.fromJson(value.data);
+        emit(NewsEverythingStateSuccess(newsEverythingModel));
       } else {
         print(value.data);
         emit(NewsEverythingStateError(value.statusMessage ?? 'Unknown error'));
