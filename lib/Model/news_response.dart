@@ -2,20 +2,20 @@
 import 'dart:convert';
 
 /// Top-level response
-class NewsResponse {
+class NewsModel {
   final String? status;
   final int? totalResults;
-  final List<Article>? articles;
+  final List<ArticleModel>? articles;
 
-  NewsResponse({this.status, this.totalResults, this.articles});
+  NewsModel({this.status, this.totalResults, this.articles});
 
-  factory NewsResponse.fromJson(Map<String, dynamic> json) => NewsResponse(
+  factory NewsModel.fromJson(Map<String, dynamic> json) => NewsModel(
     status: json['status'],
     totalResults: json['totalResults'],
     articles:
         (json['articles'] is List)
             ? (json['articles'] as List)
-                .map((e) => Article.fromJson(e as Map<String, dynamic>))
+                .map((e) => ArticleModel.fromJson(e as Map<String, dynamic>))
                 .toList()
             : null,
   );
@@ -26,13 +26,13 @@ class NewsResponse {
     'articles': articles?.map((e) => e.toJson()).toList(),
   };
 
-  factory NewsResponse.fromRawJson(String source) =>
-      NewsResponse.fromJson(json.decode(source));
+  factory NewsModel.fromRawJson(String source) =>
+      NewsModel.fromJson(json.decode(source));
 }
 
 /// Individual article
-class Article {
-  final Source? source;
+class ArticleModel {
+  final SourceModel? source;
   final String? author;
   final String? title;
   final String? description;
@@ -41,7 +41,7 @@ class Article {
   final DateTime? publishedAt;
   final String? content;
 
-  Article({
+  ArticleModel({
     this.source,
     this.author,
     this.title,
@@ -52,10 +52,10 @@ class Article {
     this.content,
   });
 
-  factory Article.fromJson(Map<String, dynamic> json) => Article(
+  factory ArticleModel.fromJson(Map<String, dynamic> json) => ArticleModel(
     source:
         json['source'] != null
-            ? Source.fromJson(json['source'] as Map<String, dynamic>)
+            ? SourceModel.fromJson(json['source'] as Map<String, dynamic>)
             : null,
     author: json['author'],
     title: json['title'],
@@ -82,14 +82,14 @@ class Article {
 }
 
 /// Article source
-class Source {
+class SourceModel {
   final String? id;
   final String? name;
 
-  Source({this.id, this.name});
+  SourceModel({this.id, this.name});
 
-  factory Source.fromJson(Map<String, dynamic> json) =>
-      Source(id: json['id'], name: json['name']);
+  factory SourceModel.fromJson(Map<String, dynamic> json) =>
+      SourceModel(id: json['id'], name: json['name']);
 
   Map<String, dynamic> toJson() => {'id': id, 'name': name};
 }
