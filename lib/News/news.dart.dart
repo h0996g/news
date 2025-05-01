@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:news/News/components/card/news_card.dart';
+import 'package:news/News/components/filter.dart/dialog.dart';
 import 'package:news/News/cubit/news_cubit.dart';
 
 class NewsScreen extends StatelessWidget {
@@ -12,7 +13,13 @@ class NewsScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Latest News'),
         centerTitle: true,
-        backgroundColor: Colors.deepPurple,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.filter_alt),
+            tooltip: 'Filter',
+            onPressed: () => showFilterDialog(context),
+          ),
+        ],
       ),
       body: BlocBuilder<NewsCubit, NewsState>(
         builder: (context, state) {

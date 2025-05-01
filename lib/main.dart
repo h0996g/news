@@ -4,12 +4,16 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:news/News/cubit/news_cubit.dart';
 import 'package:news/api/dio.dart';
+import 'package:news/helper/cach.dart';
 import 'package:news/helper/environment.dart';
 import 'package:news/helper/observer.dart';
 import 'package:news/route.dart';
+import 'package:news/them.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await CachHelper.init();
+
   await dotenv.load(fileName: Enviroment.fileName);
   Bloc.observer = MyBlocObserver();
   VPSDio.init();
@@ -32,6 +36,9 @@ class MyApp extends StatelessWidget {
         child: MaterialApp.router(
           routerConfig: AppRouter.router,
           debugShowCheckedModeBanner: false,
+          theme: AppThemes.lightTheme,
+          themeMode: ThemeMode.light,
+          darkTheme: AppThemes.darkTheme,
         ),
       ),
     );
