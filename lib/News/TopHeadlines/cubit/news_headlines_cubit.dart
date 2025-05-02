@@ -17,7 +17,7 @@ class NewsHeadlinesCubit extends Cubit<NewsHeadlinesState> {
 
   Future<void> getNewsHeadline({
     NewsFilterModel? filter,
-    String keyword = 'latest',
+    String keyword = 'all',
     int page = 1,
     bool isLoadMore = false,
   }) async {

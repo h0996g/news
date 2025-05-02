@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:news/Model/news/news_model.dart';
 import 'package:news/components/functions/functions.dart';
 import 'package:news/components/image/cached_image_widget.dart';
+import 'package:news/const/colors.dart';
 
 class NewsCard extends StatelessWidget {
   final ArticleModel article;
@@ -68,7 +69,10 @@ class NewsCard extends StatelessWidget {
                     alignment: Alignment.centerRight,
                     child: TextButton(
                       onPressed: () => launchURL(article.url!),
-                      child: const Text('Read Full Article'),
+                      child: const Text(
+                        'Read Full Article',
+                        style: TextStyle(color: primaryColor),
+                      ),
                     ),
                   ),
               ],

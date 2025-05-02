@@ -17,7 +17,7 @@ class NewsEverythingCubit extends Cubit<NewsEverythingState> {
 
   Future<void> getNewsEverything({
     NewsFilterModel? filter,
-    String keyword = 'latest',
+    String keyword = 'all',
     int page = 1,
     bool isLoadMore = false,
   }) async {
