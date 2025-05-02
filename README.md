@@ -27,12 +27,11 @@ These files contain environment-specific variables such as API URLs or keys and 
 Example `.env` content:
 
 ```env
-API_BASE_URL=https://example.com/api
-API_KEY=your_api_key_here
+baseUrl=https://example.com/api
+apiKey=your_api_key_here
 ```
-````
 
----
+
 
 ### 🛠 Build & Run Configuration
 
