@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:news/News/components/card/news_card.dart';
 import 'package:news/News/components/filter.dart/dialog.dart';
 import 'package:news/News/cubit/news_cubit.dart';
+import 'package:news/const/colors.dart';
 
 class NewsScreen extends StatelessWidget {
   const NewsScreen({super.key});
@@ -31,13 +32,21 @@ class NewsScreen extends StatelessWidget {
             return const Center(child: Text("Something went wrong"));
           } else if (state is NewsEverythingStateSuccess) {
             final newsList = state.newsModel.articles ?? [];
-            return ListView.builder(
-              padding: const EdgeInsets.all(10),
-              itemCount: newsList.length,
-              itemBuilder: (context, index) {
-                final article = newsList[index];
-                return NewsCard(article: article);
+            return RefreshIndicator(
+              color: primaryColor,
+              backgroundColor: Colors.white,
+              onRefresh: () async {
+                await NewsCubit.get(context).getNewsEverything();
+                Future.delayed(const Duration(seconds: 3));
               },
+              child: ListView.builder(
+                padding: const EdgeInsets.all(10),
+                itemCount: newsList.length,
+                itemBuilder: (context, index) {
+                  final article = newsList[index];
+                  return NewsCard(article: article);
+                },
+              ),
             );
           }
           return const Center(child: Text("No Data"));

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:news/Model/news/news_response.dart';
+import 'package:news/Model/news/news_model.dart';
 import 'package:news/components/functions/functions.dart';
 import 'package:news/components/image/cached_image_widget.dart';
 

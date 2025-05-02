@@ -6,6 +6,9 @@ import 'package:news/News/cubit/news_cubit.dart';
 import 'package:news/api/dio.dart';
 import 'package:news/helper/cach.dart';
 import 'package:news/helper/environment.dart';
+import 'package:news/helper/hive/BD/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+
 import 'package:news/helper/observer.dart';
 import 'package:news/route.dart';
 import 'package:news/them.dart';
@@ -17,6 +20,8 @@ Future<void> main() async {
   await dotenv.load(fileName: Enviroment.fileName);
   Bloc.observer = MyBlocObserver();
   VPSDio.init();
+  await Hive.initFlutter();
+  await HiveDB.initHive(); // Initialize Hive
 
   runApp(const MyApp());
 }
