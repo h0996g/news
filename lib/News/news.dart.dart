@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:news/News/components/card/news_list.dart';
 import 'package:news/News/components/filter.dart/dialog.dart';
 import 'package:news/News/cubit/news_cubit.dart';
+import 'package:news/components/widget/retry_button.dart';
 import 'package:news/components/widget/toast.dart';
 import 'package:news/const/colors.dart';
 
@@ -46,9 +47,17 @@ class NewsScreen extends StatelessWidget {
               child: NewsListView(newsList: newsList), // move logic here
             );
           } else if (state is NewsEverythingStateBad) {
-            return const Center(child: Text("Something went wrong"));
+            return RetryButton(
+              onPressed: () async {
+                await NewsCubit.get(context).getNewsEverything();
+              },
+            );
           } else if (state is NewsEverythingStateError) {
-            return Center(child: Text(state.error));
+            return RetryButton(
+              onPressed: () async {
+                await NewsCubit.get(context).getNewsEverything();
+              },
+            );
           }
           return const Center(child: Text("No Data"));
         },
