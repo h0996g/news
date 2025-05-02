@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:news/Model/error/error_m.dart';
+import 'package:news/Model/filter/news_filter_m.dart';
 import 'package:news/Model/news/news_model.dart';
 import 'package:news/api/api_const.dart';
 import 'package:news/api/dio.dart';
@@ -15,31 +16,30 @@ class NewsCubit extends Cubit<NewsState> {
   NewsModel? newsModel;
 
   Future<void> getNewsEverything({
-    String? fromDate,
-    String? toDate,
-    String? source,
+    NewsFilterModel? filter,
     String keyword = 'latest',
     int page = 1,
     bool isLoadMore = false,
   }) async {
     if (!isLoadMore) emit(NewsEverythingStateLoading());
 
-    // Use cached data only if page 1
     if (page == 1) {
       final cached = HiveDB.getNews();
       if (cached != null) {
         newsModel = cached.toFreezedModel();
+        print(newsModel?.articles?.length);
+
         emit(NewsEverythingStateSuccess(newsModel!, page));
       }
     }
 
     final query = {
       'q': keyword,
-      'from': fromDate,
-      'to': toDate,
+      'from': filter?.from?.toIso8601String(),
+      'to': filter?.to?.toIso8601String(),
       'page': page.toString(),
       'pageSize': 100,
-      if (source != null && source.isNotEmpty) 'sources': source,
+      'sources': filter?.source,
     };
 
     try {
@@ -69,7 +69,6 @@ class NewsCubit extends Cubit<NewsState> {
           }
         }
       } else {
-        print(value.data);
         emit(NewsEverythingStateError(ErrorModel.fromJson(value.data).message));
       }
     } catch (error) {
