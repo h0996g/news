@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:news/News/cubit/news_cubit.dart';
+import 'package:news/News/Everything/cubit/news_everything_cubit.dart';
+import 'package:news/News/TopHeadlines/cubit/news_headlines_cubit.dart';
 import 'package:news/api/dio.dart';
 import 'package:news/components/widget/no_internet.dart';
 import 'package:news/cubit/main_cubit.dart';
@@ -40,10 +41,9 @@ class MyApp extends StatelessWidget {
       child: MultiBlocProvider(
         providers: [
           BlocProvider(
-            create: (context) => NewsCubit()..getNewsEverything(),
-
-            // ..getNewsHeadlines(),
+            create: (context) => NewsEverythingCubit()..getNewsEverything(),
           ),
+          BlocProvider(create: (_) => NewsHeadlinesCubit()..getNewsHeadline()),
           BlocProvider(create: (context) => MainCubit()..startConnectivity()),
         ],
         child: BlocBuilder<MainCubit, MainState>(

@@ -8,11 +8,11 @@ import 'package:news/api/dio.dart';
 import 'package:news/helper/hive/BD/hive.dart';
 import 'package:news/helper/hive/BD/news/news_model_mapper.dart';
 
-part 'news_state.dart';
+part 'news_everything_state.dart';
 
-class NewsCubit extends Cubit<NewsState> {
-  NewsCubit() : super(NewsInitial());
-  static NewsCubit get(context) => BlocProvider.of(context);
+class NewsEverythingCubit extends Cubit<NewsEverythingState> {
+  NewsEverythingCubit() : super(NewsInitial());
+  static NewsEverythingCubit get(context) => BlocProvider.of(context);
   NewsModel? newsModel;
 
   Future<void> getNewsEverything({
@@ -24,7 +24,7 @@ class NewsCubit extends Cubit<NewsState> {
     if (!isLoadMore) emit(NewsEverythingStateLoading());
 
     if (page == 1) {
-      final cached = HiveDB.getNews();
+      final cached = HiveDB.getEverything();
       if (cached != null) {
         newsModel = cached.toFreezedModel();
         print(newsModel?.articles?.length);
@@ -38,7 +38,7 @@ class NewsCubit extends Cubit<NewsState> {
       'from': filter?.from?.toIso8601String(),
       'to': filter?.to?.toIso8601String(),
       'page': page.toString(),
-      'pageSize': 100,
+      'pageSize': 20,
       'sources': filter?.source,
     };
 
@@ -52,7 +52,7 @@ class NewsCubit extends Cubit<NewsState> {
         final freshNews = NewsModel.fromJson(value.data);
 
         if (page == 1) {
-          HiveDB.saveNews(freshNews.toHiveModel());
+          HiveDB.saveEverything(freshNews.toHiveModel());
           newsModel = freshNews;
           emit(NewsEverythingStateSuccess(newsModel!, page));
         } else {
@@ -69,6 +69,7 @@ class NewsCubit extends Cubit<NewsState> {
           }
         }
       } else {
+        print(value.data);
         emit(NewsEverythingStateError(ErrorModel.fromJson(value.data).message));
       }
     } catch (error) {

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:news/News/components/card/news_card.dart';
 import 'package:news/Model/news/news_model.dart';
-import 'package:news/News/cubit/news_cubit.dart';
+import 'package:news/News/Everything/cubit/news_everything_cubit.dart';
 
 class NewsListView extends StatefulWidget {
   final List<ArticleModel> newsList;
@@ -49,7 +49,7 @@ class _NewsListViewState extends State<NewsListView> {
       currentPage += 1;
     });
 
-    await NewsCubit.get(
+    await NewsEverythingCubit.get(
       context,
     ).getNewsEverything(page: currentPage, isLoadMore: true);
 
