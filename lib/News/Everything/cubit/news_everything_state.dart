@@ -29,4 +29,7 @@ final class NewsEverythingStateError extends NewsEverythingState {
   const NewsEverythingStateError(this.error);
 }
 
-final class NewsEverythingStateBad extends NewsEverythingState {}
+final class NewsEverythingStateBad extends NewsEverythingState {
+  final String error;
+  const NewsEverythingStateBad(this.error);
+}

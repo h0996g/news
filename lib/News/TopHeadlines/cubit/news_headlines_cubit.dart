@@ -41,7 +41,7 @@ class NewsHeadlinesCubit extends Cubit<NewsHeadlinesState> {
       mergeArticles: (fresh, combined) => fresh.copyWith(articles: combined),
       onSuccess: (news, page) => NewsHeadlinesStateSuccess(news, page),
       onError: (msg) => NewsHeadlinesStateError(msg),
-      onBad: (e) => emit(NewsHeadlinesStateBad()),
+      onBad: (e) => emit(NewsHeadlinesStateBad(e.toString())),
       onLoading: () => emit(NewsHeadlinesStateLoading()),
     );
   }

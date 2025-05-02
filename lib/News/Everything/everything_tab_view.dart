@@ -17,6 +17,8 @@ class EverythingTabView extends StatelessWidget {
       listener: (context, state) {
         if (state is NewsEverythingStateError) {
           showToast(msg: state.error, state: ToastStates.error);
+        } else if (state is NewsEverythingStateBad) {
+          showToast(msg: state.error, state: ToastStates.error);
         }
       },
       builder: (context, state) {

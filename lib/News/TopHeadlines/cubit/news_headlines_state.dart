@@ -29,4 +29,7 @@ final class NewsHeadlinesStateError extends NewsHeadlinesState {
   const NewsHeadlinesStateError(this.error);
 }
 
-final class NewsHeadlinesStateBad extends NewsHeadlinesState {}
+final class NewsHeadlinesStateBad extends NewsHeadlinesState {
+  final String error;
+  const NewsHeadlinesStateBad(this.error);
+}

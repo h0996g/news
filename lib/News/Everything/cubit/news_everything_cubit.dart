@@ -43,7 +43,7 @@ class NewsEverythingCubit extends Cubit<NewsEverythingState> {
       onSuccess: (news, page) => NewsEverythingStateSuccess(news, page),
       onError: (msg) => NewsEverythingStateError(msg),
       onBad: (e) {
-        emit(NewsEverythingStateBad());
+        emit(NewsEverythingStateBad(e.toString()));
       },
       onLoading: () => emit(NewsEverythingStateLoading()),
     );

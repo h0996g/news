@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:news/News/TopHeadlines/cubit/news_headlines_cubit.dart';
 import 'package:news/News/components/card/news_card.dart';
 import 'package:news/Model/news/news_model.dart';
@@ -78,23 +79,46 @@ class _NewsListViewState extends State<NewsListView> {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = 1.sw; // screenUtil width
+    print("Screen width: $screenWidth");
+    final isLargeScreen = screenWidth > 700;
+    print("Is large screen: $isLargeScreen");
+
     return Column(
       children: [
         Expanded(
-          child: ListView.builder(
-            controller: _scrollController,
-            padding: const EdgeInsets.all(10),
-            itemCount: widget.newsList.length,
-            itemBuilder: (context, index) {
-              final article = widget.newsList[index];
-              return NewsCard(article: article);
-            },
+          child: Padding(
+            padding: EdgeInsets.all(10.w),
+            child:
+                isLargeScreen
+                    ? GridView.builder(
+                      controller: _scrollController,
+                      itemCount: widget.newsList.length,
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                        crossAxisSpacing: 12.w,
+                        mainAxisSpacing: 12.h,
+                        childAspectRatio: 3 / 4.5,
+                      ),
+                      itemBuilder: (context, index) {
+                        final article = widget.newsList[index];
+                        return NewsCard(article: article);
+                      },
+                    )
+                    : ListView.builder(
+                      controller: _scrollController,
+                      itemCount: widget.newsList.length,
+                      itemBuilder: (context, index) {
+                        final article = widget.newsList[index];
+                        return NewsCard(article: article);
+                      },
+                    ),
           ),
         ),
         if (isLoadingMore)
-          const Padding(
-            padding: EdgeInsets.symmetric(vertical: 16),
-            child: CircularProgressIndicator(),
+          Padding(
+            padding: EdgeInsets.symmetric(vertical: 16.h),
+            child: const CircularProgressIndicator(),
           ),
       ],
     );

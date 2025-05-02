@@ -17,6 +17,8 @@ class HeadlinesTabView extends StatelessWidget {
       listener: (context, state) {
         if (state is NewsHeadlinesStateError) {
           showToast(msg: state.error, state: ToastStates.error);
+        } else if (state is NewsHeadlinesStateBad) {
+          showToast(msg: state.error, state: ToastStates.error);
         }
       },
       builder: (context, state) {
