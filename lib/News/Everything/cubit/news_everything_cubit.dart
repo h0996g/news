@@ -16,13 +16,11 @@ class NewsEverythingCubit extends Cubit<NewsEverythingState> {
   NewsModel? newsModel;
 
   Future<void> getNewsEverything({
-    // NewsFilterModel? filter,
     String keyword = 'all',
     int page = 1,
     bool isLoadMore = false,
   }) async {
     if (!isLoadMore) emit(NewsEverythingStateLoading());
-
     if (page == 1) {
       final cached = HiveDB.getEverything();
       if (cached != null) {
@@ -38,7 +36,7 @@ class NewsEverythingCubit extends Cubit<NewsEverythingState> {
       'from': defaultEverythingFilter?.from?.toIso8601String(),
       'to': defaultEverythingFilter?.to?.toIso8601String(),
       'page': page.toString(),
-      'pageSize': 20,
+      'pageSize': pageSize,
       'sources': defaultEverythingFilter?.source,
     };
 

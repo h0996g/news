@@ -37,7 +37,7 @@ class NewsHeadlinesCubit extends Cubit<NewsHeadlinesState> {
       'from': defaultHeadlinesFilter?.from?.toIso8601String(),
       'to': defaultHeadlinesFilter?.to?.toIso8601String(),
       'page': page.toString(),
-      'pageSize': 20,
+      'pageSize': pageSize,
       'sources': defaultHeadlinesFilter?.source,
     };
 

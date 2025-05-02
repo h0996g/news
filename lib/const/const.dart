@@ -11,3 +11,4 @@ const String customCacheKey = "customCacheKey";
 // ----------------- constants -----------------
 NewsFilterModel? defaultEverythingFilter;
 NewsFilterModel? defaultHeadlinesFilter;
+const int pageSize = 25;
