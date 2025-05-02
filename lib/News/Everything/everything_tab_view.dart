@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:news/News/Everything/cubit/news_everything_cubit.dart';
 import 'package:news/News/components/card/news_list.dart';
-import 'package:news/News/components/card/shimmer/news_card_shimmer.dart';
+import 'package:news/News/components/card/shimmer/news_List_shimmer.dart';
 import 'package:news/components/widget/refresh.dart';
 import 'package:news/components/widget/retry_button.dart';
 import 'package:news/components/widget/toast.dart';
@@ -17,22 +17,12 @@ class EverythingTabView extends StatelessWidget {
       listener: (context, state) {
         if (state is NewsEverythingStateError) {
           showToast(msg: state.error, state: ToastStates.error);
-        } else if (state is NewsEverythingStateBad) {
-          showToast(msg: "Something went wrong", state: ToastStates.error);
         }
       },
       builder: (context, state) {
         final cubit = NewsEverythingCubit.get(context);
         if (state is NewsEverythingStateLoading) {
-          return ListView.builder(
-            itemCount: 4,
-            itemBuilder: (context, index) {
-              return Padding(
-                padding: const EdgeInsets.all(10),
-                child: NewsCardShimmer(),
-              );
-            },
-          );
+          return NewsListShimmer();
         } else if (cubit.newsModel != null) {
           final newsList = cubit.newsModel?.articles ?? [];
           return RefreshableNewsList(

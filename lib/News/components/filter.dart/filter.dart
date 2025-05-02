@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:news/const/colors.dart';
-import 'package:news/const/const.dart';
-import 'package:news/helper/cach.dart';
 
 class NewsFilterWidget extends StatefulWidget {
   final bool isEverything;
@@ -101,9 +99,6 @@ class _NewsFilterWidgetState extends State<NewsFilterWidget> {
       fromDate = null;
       toDate = null;
       sourceController.clear();
-      CachHelper.removdata(key: kFilterFromDate);
-      CachHelper.removdata(key: kFilterToDate);
-      CachHelper.removdata(key: kFilterSource);
     });
   }
 

@@ -30,19 +30,3 @@ final class NewsEverythingStateError extends NewsEverythingState {
 }
 
 final class NewsEverythingStateBad extends NewsEverythingState {}
-
-final class NewsHeadlinesStateLoading extends NewsEverythingState {}
-
-final class NewsHeadlinesStateSuccess extends NewsEverythingState {
-  final NewsModel newsModel;
-
-  const NewsHeadlinesStateSuccess(this.newsModel);
-}
-
-final class NewsHeadlinesStateError extends NewsEverythingState {
-  final String error;
-
-  const NewsHeadlinesStateError(this.error);
-}
-
-final class NewsHeadlinesStateBad extends NewsEverythingState {}
