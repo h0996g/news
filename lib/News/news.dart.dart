@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:news/News/components/card/news_list.dart';
 import 'package:news/News/components/filter.dart/dialog.dart';
 import 'package:news/News/cubit/news_cubit.dart';
+import 'package:news/components/widget/toast.dart';
 import 'package:news/const/colors.dart';
 
 class NewsScreen extends StatelessWidget {
@@ -22,16 +23,19 @@ class NewsScreen extends StatelessWidget {
           ),
         ],
       ),
-      body: BlocBuilder<NewsCubit, NewsState>(
+      body: BlocConsumer<NewsCubit, NewsState>(
+        listener: (BuildContext context, NewsState state) {
+          if (state is NewsEverythingStateError) {
+            showToast(msg: state.error, state: ToastStates.error);
+          } else if (state is NewsEverythingStateBad) {
+            showToast(msg: "Something went wrong", state: ToastStates.error);
+          }
+        },
         builder: (context, state) {
           if (state is NewsEverythingStateLoading) {
             return const Center(child: CircularProgressIndicator());
-          } else if (state is NewsEverythingStateError) {
-            return Center(child: Text(state.error));
-          } else if (state is NewsEverythingStateBad) {
-            return const Center(child: Text("Something went wrong"));
-          } else if (state is NewsEverythingStateSuccess) {
-            final newsList = state.newsModel.articles ?? [];
+          } else if (NewsCubit.get(context).newsModel != null) {
+            final newsList = NewsCubit.get(context).newsModel?.articles ?? [];
             return RefreshIndicator(
               color: primaryColor,
               backgroundColor: Colors.white,
@@ -41,6 +45,10 @@ class NewsScreen extends StatelessWidget {
               },
               child: NewsListView(newsList: newsList), // move logic here
             );
+          } else if (state is NewsEverythingStateBad) {
+            return const Center(child: Text("Something went wrong"));
+          } else if (state is NewsEverythingStateError) {
+            return Center(child: Text(state.error));
           }
           return const Center(child: Text("No Data"));
         },

@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:news/Model/error/error_m.dart';
 import 'package:news/Model/news/news_model.dart';
 import 'package:news/api/api_const.dart';
 import 'package:news/api/dio.dart';
@@ -11,6 +12,8 @@ part 'news_state.dart';
 class NewsCubit extends Cubit<NewsState> {
   NewsCubit() : super(NewsInitial());
   static NewsCubit get(context) => BlocProvider.of(context);
+  NewsModel? newsModel;
+
   Future<void> getNewsEverything({
     String? fromDate,
     String? toDate,
@@ -19,16 +22,14 @@ class NewsCubit extends Cubit<NewsState> {
     int page = 1,
     bool isLoadMore = false,
   }) async {
-    bool emittedCache = false;
-
     if (!isLoadMore) emit(NewsEverythingStateLoading());
 
-    // ✅ Use cached data only if page 1
+    // Use cached data only if page 1
     if (page == 1) {
       final cached = HiveDB.getNews();
       if (cached != null) {
-        emit(NewsEverythingStateSuccess(cached.toFreezedModel(), page));
-        emittedCache = true;
+        newsModel = cached.toFreezedModel();
+        emit(NewsEverythingStateSuccess(newsModel!, page));
       }
     }
 
@@ -52,7 +53,8 @@ class NewsCubit extends Cubit<NewsState> {
 
         if (page == 1) {
           HiveDB.saveNews(freshNews.toHiveModel());
-          emit(NewsEverythingStateSuccess(freshNews, page));
+          newsModel = freshNews;
+          emit(NewsEverythingStateSuccess(newsModel!, page));
         } else {
           final currentState = state;
           if (currentState is NewsEverythingStateSuccess) {
@@ -60,21 +62,18 @@ class NewsCubit extends Cubit<NewsState> {
               ...currentState.newsModel.articles ?? [],
               ...freshNews.articles ?? [],
             ];
-            final mergedModel = freshNews.copyWith(
+            newsModel = freshNews.copyWith(
               articles: combinedArticles.cast<ArticleModel>(),
             );
-            emit(NewsEverythingStateSuccess(mergedModel, page));
+            emit(NewsEverythingStateSuccess(newsModel!, page));
           }
         }
       } else {
-        if (!emittedCache) {
-          emit(
-            NewsEverythingStateError(value.statusMessage ?? 'Unknown error'),
-          );
-        }
+        print(value.data);
+        emit(NewsEverythingStateError(ErrorModel.fromJson(value.data).message));
       }
     } catch (error) {
-      if (!emittedCache && page == 1) {
+      if (page == 1) {
         emit(NewsEverythingStateBad());
       }
     }

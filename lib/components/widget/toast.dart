@@ -4,12 +4,12 @@ import 'package:fluttertoast/fluttertoast.dart';
 void showToast({
   required String msg,
   required ToastStates state,
-  ToastGravity gravity = ToastGravity.TOP,
+  ToastGravity gravity = ToastGravity.CENTER,
 }) => Fluttertoast.showToast(
   msg: msg,
-  toastLength: Toast.LENGTH_SHORT,
+  toastLength: Toast.LENGTH_LONG,
+  timeInSecForIosWeb: 4,
   gravity: gravity,
-  timeInSecForIosWeb: 1,
   backgroundColor: choseToastColor(state),
   textColor: Colors.white,
   fontSize: 16.0,
