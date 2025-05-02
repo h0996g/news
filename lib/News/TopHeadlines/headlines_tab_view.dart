@@ -7,7 +7,8 @@ import 'package:news/components/widget/retry_button.dart';
 import 'package:news/components/widget/toast.dart';
 
 class HeadlinesTabView extends StatelessWidget {
-  const HeadlinesTabView({super.key});
+  final bool isEverything;
+  const HeadlinesTabView({super.key, required this.isEverything});
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +31,7 @@ class HeadlinesTabView extends StatelessWidget {
               await cubit.getNewsHeadline();
               await Future.delayed(const Duration(seconds: 2));
             },
-            child: NewsListView(newsList: newsList),
+            child: NewsListView(newsList: newsList, isEveything: isEverything),
           );
         } else {
           return RetryButton(

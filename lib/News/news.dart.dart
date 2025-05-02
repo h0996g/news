@@ -41,7 +41,10 @@ class NewsScreen extends StatelessWidget {
           ),
         ),
         body: const TabBarView(
-          children: [EverythingTabView(), HeadlinesTabView()],
+          children: [
+            EverythingTabView(isEverything: true),
+            HeadlinesTabView(isEverything: false),
+          ],
         ),
       ),
     );

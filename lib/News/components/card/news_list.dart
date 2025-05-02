@@ -1,12 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:news/News/TopHeadlines/cubit/news_headlines_cubit.dart';
 import 'package:news/News/components/card/news_card.dart';
 import 'package:news/Model/news/news_model.dart';
 import 'package:news/News/Everything/cubit/news_everything_cubit.dart';
 
 class NewsListView extends StatefulWidget {
   final List<ArticleModel> newsList;
+  final bool isEveything;
 
-  const NewsListView({super.key, required this.newsList});
+  const NewsListView({
+    super.key,
+    required this.newsList,
+    required this.isEveything,
+  });
 
   @override
   State<NewsListView> createState() => _NewsListViewState();
@@ -48,10 +54,15 @@ class _NewsListViewState extends State<NewsListView> {
       isLoadingMore = true;
       currentPage += 1;
     });
-
-    await NewsEverythingCubit.get(
-      context,
-    ).getNewsEverything(page: currentPage, isLoadMore: true);
+    if (widget.isEveything) {
+      await NewsEverythingCubit.get(
+        context,
+      ).getNewsEverything(page: currentPage, isLoadMore: true);
+    } else {
+      await NewsHeadlinesCubit.get(
+        context,
+      ).getNewsHeadline(page: currentPage, isLoadMore: true);
+    }
 
     setState(() {
       isLoadingMore = false;
