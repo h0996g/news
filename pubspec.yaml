@@ -46,7 +46,6 @@ dependencies:
   flutter_cache_manager: ^3.4.1
   cached_network_image: ^3.4.1
   fluttertoast: ^8.2.12
-  shared_preferences: ^2.5.3
   freezed: ^2.5.2
   json_annotation: ^4.9.0
   hive_flutter: ^1.1.0
