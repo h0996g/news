@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:news/News/components/card/news_card.dart';
+import 'package:news/News/components/card/news_list.dart';
 import 'package:news/News/components/filter.dart/dialog.dart';
 import 'package:news/News/cubit/news_cubit.dart';
 import 'package:news/const/colors.dart';
@@ -39,14 +39,7 @@ class NewsScreen extends StatelessWidget {
                 await NewsCubit.get(context).getNewsEverything();
                 Future.delayed(const Duration(seconds: 3));
               },
-              child: ListView.builder(
-                padding: const EdgeInsets.all(10),
-                itemCount: newsList.length,
-                itemBuilder: (context, index) {
-                  final article = newsList[index];
-                  return NewsCard(article: article);
-                },
-              ),
+              child: NewsListView(newsList: newsList), // move logic here
             );
           }
           return const Center(child: Text("No Data"));

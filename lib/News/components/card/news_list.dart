@@ -1,0 +1,91 @@
+import 'package:flutter/material.dart';
+import 'package:news/News/components/card/news_card.dart';
+import 'package:news/Model/news/news_model.dart';
+import 'package:news/News/cubit/news_cubit.dart';
+
+class NewsListView extends StatefulWidget {
+  final List<ArticleModel> newsList;
+
+  const NewsListView({super.key, required this.newsList});
+
+  @override
+  State<NewsListView> createState() => _NewsListViewState();
+}
+
+class _NewsListViewState extends State<NewsListView> {
+  final ScrollController _scrollController = ScrollController();
+
+  bool isAtBottom = false;
+  bool isLoadingMore = false;
+  int currentPage = 1;
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController.addListener(_onScroll);
+  }
+
+  void _onScroll() {
+    if (_scrollController.position.pixels >=
+            _scrollController.position.maxScrollExtent &&
+        !_scrollController.position.outOfRange) {
+      if (!isAtBottom && !isLoadingMore) {
+        isAtBottom = true;
+        print("Reached bottom");
+
+        _loadMore();
+      }
+    } else {
+      if (isAtBottom) {
+        isAtBottom = false;
+        print("Left bottom");
+      }
+    }
+  }
+
+  Future<void> _loadMore() async {
+    setState(() {
+      isLoadingMore = true;
+      currentPage += 1;
+    });
+
+    await NewsCubit.get(
+      context,
+    ).getNewsEverything(page: currentPage, isLoadMore: true);
+
+    setState(() {
+      isLoadingMore = false;
+    });
+  }
+
+  @override
+  void dispose() {
+    _scrollController.removeListener(_onScroll);
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Expanded(
+          child: ListView.builder(
+            controller: _scrollController,
+            padding: const EdgeInsets.all(10),
+            itemCount: widget.newsList.length,
+            itemBuilder: (context, index) {
+              final article = widget.newsList[index];
+              return NewsCard(article: article);
+            },
+          ),
+        ),
+        if (isLoadingMore)
+          const Padding(
+            padding: EdgeInsets.symmetric(vertical: 16),
+            child: CircularProgressIndicator(),
+          ),
+      ],
+    );
+  }
+}

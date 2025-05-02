@@ -13,8 +13,14 @@ final class NewsEverythingStateLoading extends NewsState {}
 
 final class NewsEverythingStateSuccess extends NewsState {
   final NewsModel newsModel;
+  final int page;
 
-  const NewsEverythingStateSuccess(this.newsModel);
+  const NewsEverythingStateSuccess(this.newsModel, this.page);
+
+  @override
+  List<Object> get props => [newsModel, page];
+  @override
+  String toString() => 'NewsEverythingStateSuccess(page: $page, )';
 }
 
 final class NewsEverythingStateError extends NewsState {
