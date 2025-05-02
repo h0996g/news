@@ -1,10 +1,10 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:news/Model/error/error_m.dart';
-import 'package:news/Model/filter/news_filter_m.dart';
 import 'package:news/Model/news/news_model.dart';
 import 'package:news/api/api_const.dart';
 import 'package:news/api/dio.dart';
+import 'package:news/const/const.dart';
 import 'package:news/helper/hive/BD/hive.dart';
 import 'package:news/helper/hive/BD/news/news_model_mapper.dart';
 
@@ -16,7 +16,6 @@ class NewsHeadlinesCubit extends Cubit<NewsHeadlinesState> {
   NewsModel? newsModel;
 
   Future<void> getNewsHeadline({
-    NewsFilterModel? filter,
     String keyword = 'all',
     int page = 1,
     bool isLoadMore = false,
@@ -35,11 +34,11 @@ class NewsHeadlinesCubit extends Cubit<NewsHeadlinesState> {
 
     final query = {
       'q': keyword,
-      'from': filter?.from?.toIso8601String(),
-      'to': filter?.to?.toIso8601String(),
+      'from': defaultHeadlinesFilter?.from?.toIso8601String(),
+      'to': defaultHeadlinesFilter?.to?.toIso8601String(),
       'page': page.toString(),
       'pageSize': 20,
-      'sources': filter?.source,
+      'sources': defaultHeadlinesFilter?.source,
     };
 
     try {
@@ -54,10 +53,16 @@ class NewsHeadlinesCubit extends Cubit<NewsHeadlinesState> {
         if (page == 1) {
           HiveDB.saveTopHeadlines(freshNews.toHiveModel());
           newsModel = freshNews;
+
           emit(NewsHeadlinesStateSuccess(newsModel!, page));
         } else {
           final currentState = state;
           if (currentState is NewsHeadlinesStateSuccess) {
+            if ((freshNews.articles?.isEmpty ?? true)) {
+              emit(NewsHeadlinesStateError("No more articles available."));
+              return;
+            }
+
             final combinedArticles = [
               ...currentState.newsModel.articles ?? [],
               ...freshNews.articles ?? [],
@@ -69,7 +74,8 @@ class NewsHeadlinesCubit extends Cubit<NewsHeadlinesState> {
           }
         }
       } else {
-        emit(NewsHeadlinesStateError(ErrorModel.fromJson(value.data).message));
+        ErrorModel errorModel = ErrorModel.fromJson(value.data);
+        emit(NewsHeadlinesStateError(errorModel.message));
       }
     } catch (error) {
       if (page == 1) {

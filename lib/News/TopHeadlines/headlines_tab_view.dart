@@ -25,13 +25,19 @@ class HeadlinesTabView extends StatelessWidget {
         if (state is NewsHeadlinesStateLoading) {
           return const Center(child: CircularProgressIndicator());
         } else if (cubit.newsModel != null) {
-          final newsList = cubit.newsModel?.articles ?? [];
+          if (cubit.newsModel?.articles?.isEmpty == true) {
+            return const Center(child: Text("No news found"));
+          }
+          final newsList = cubit.newsModel?.articles;
           return RefreshableNewsList(
             onRefresh: () async {
               await cubit.getNewsHeadline();
               await Future.delayed(const Duration(seconds: 2));
             },
-            child: NewsListView(newsList: newsList, isEveything: isEverything),
+            child: NewsListView(
+              newsList: newsList ?? [],
+              isEveything: isEverything,
+            ),
           );
         } else {
           return RetryButton(

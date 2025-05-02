@@ -5,6 +5,7 @@ import 'package:news/const/const.dart';
 import 'package:news/helper/cach.dart';
 
 class NewsFilterWidget extends StatefulWidget {
+  final bool isEverything;
   final DateTime? initialFrom;
   final DateTime? initialTo;
   final String? initialSource;
@@ -22,6 +23,7 @@ class NewsFilterWidget extends StatefulWidget {
     this.initialFrom,
     this.initialTo,
     this.initialSource,
+    required this.isEverything,
   });
 
   @override
