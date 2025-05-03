@@ -9,9 +9,7 @@
 | ------------- | ------------------------------------- |
 | Flutter SDK   | 3.29.2 (stable)                       |
 | Dart SDK      | >= 3.7.2                              |
-| OS            | Windows 11 Pro (64-bit, Version 24H2) |
-| IDEs          | Android Studio 2024.2, VS Code 1.99.3 |
-| Build Targets | Android, Web, Windows Desktop         |
+
 
 ---
 
