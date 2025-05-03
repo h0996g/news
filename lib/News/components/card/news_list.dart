@@ -38,14 +38,12 @@ class _NewsListViewState extends State<NewsListView> {
         !_scrollController.position.outOfRange) {
       if (!isAtBottom && !isLoadingMore) {
         isAtBottom = true;
-        print("Reached bottom");
 
         _loadMore();
       }
     } else {
       if (isAtBottom) {
         isAtBottom = false;
-        print("Left bottom");
       }
     }
   }
@@ -79,10 +77,8 @@ class _NewsListViewState extends State<NewsListView> {
 
   @override
   Widget build(BuildContext context) {
-    final screenWidth = 1.sw; // screenUtil width
-    print("Screen width: $screenWidth");
+    final screenWidth = 1.sw;
     final isLargeScreen = screenWidth > 700;
-    print("Is large screen: $isLargeScreen");
 
     return Column(
       children: [
